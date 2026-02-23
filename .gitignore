@@ -1,0 +1,19 @@
+# Node
+node_modules/
+
+# Build output
+dist/
+
+# Local env files
+*.local
+.env*
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
