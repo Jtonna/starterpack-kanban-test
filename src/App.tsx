@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { loadState, saveState } from './storage'
 import type { Column, Card } from './types'
 import Board from './Board'
 import './App.css'
@@ -10,8 +11,18 @@ const DEFAULT_COLUMNS: Column[] = [
 ]
 
 function App() {
-  const [columns, setColumns] = useState<Column[]>(DEFAULT_COLUMNS)
-  const [cards, setCards] = useState<Record<string, Card>>({})
+  const [columns, setColumns] = useState<Column[]>(() => {
+    const saved = loadState()
+    return saved ? saved.columns : DEFAULT_COLUMNS
+  })
+  const [cards, setCards] = useState<Record<string, Card>>(() => {
+    const saved = loadState()
+    return saved ? saved.cards : {}
+  })
+
+  useEffect(() => {
+    saveState(columns, cards)
+  }, [columns, cards])
 
   const handleAddCard = (columnId: string, title: string, description: string) => {
     const id = crypto.randomUUID()
