@@ -16,6 +16,11 @@
   color: #1a202c;
   padding: 0 0.25rem 0.5rem;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  cursor: grab;
+}
+
+.column-header:active {
+  cursor: grabbing;
 }
 
 .column-cards {
