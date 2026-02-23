@@ -97,3 +97,19 @@
   border-color: #3182ce;
   box-shadow: 0 0 0 1px #3182ce;
 }
+
+.card-dragging {
+  opacity: 0.5;
+}
+
+.card {
+  cursor: grab;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+.card-editing {
+  cursor: default;
+}
