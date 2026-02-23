@@ -3,3 +3,9 @@ export interface Column {
   title: string;
   cardIds: string[];
 }
+
+export interface Card {
+  id: string;
+  title: string;
+  description: string;
+}
