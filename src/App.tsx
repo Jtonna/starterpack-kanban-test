@@ -63,6 +63,17 @@ function App() {
     })
   }
 
+  const handleMoveColumn = (columnId: string, newIndex: number) => {
+    setColumns((prev) => {
+      const oldIndex = prev.findIndex((col) => col.id === columnId)
+      if (oldIndex === -1 || oldIndex === newIndex) return prev
+      const next = [...prev]
+      const [removed] = next.splice(oldIndex, 1)
+      next.splice(newIndex, 0, removed)
+      return next
+    })
+  }
+
   return (
     <div className="app">
       <h1>Kanban Board</h1>
@@ -73,6 +84,7 @@ function App() {
         onUpdateCard={handleUpdateCard}
         onDeleteCard={handleDeleteCard}
         onMoveCard={handleMoveCard}
+        onMoveColumn={handleMoveColumn}
       />
     </div>
   )
