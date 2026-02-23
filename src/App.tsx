@@ -46,6 +46,23 @@ function App() {
     )
   }
 
+  const handleMoveCard = (cardId: string, fromColumnId: string, toColumnId: string, newIndex: number) => {
+    setColumns((prev) => {
+      const newColumns = prev.map((col) => ({ ...col, cardIds: [...col.cardIds] }))
+      const fromCol = newColumns.find((col) => col.id === fromColumnId)
+      const toCol = newColumns.find((col) => col.id === toColumnId)
+      if (!fromCol || !toCol) return prev
+
+      const oldIndex = fromCol.cardIds.indexOf(cardId)
+      if (oldIndex === -1) return prev
+
+      fromCol.cardIds.splice(oldIndex, 1)
+      toCol.cardIds.splice(newIndex, 0, cardId)
+
+      return newColumns
+    })
+  }
+
   return (
     <div className="app">
       <h1>Kanban Board</h1>
@@ -55,6 +72,7 @@ function App() {
         onAddCard={handleAddCard}
         onUpdateCard={handleUpdateCard}
         onDeleteCard={handleDeleteCard}
+        onMoveCard={handleMoveCard}
       />
     </div>
   )
