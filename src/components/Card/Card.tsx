@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import type { CardData } from '../../types/board'
 import './Card.css'
 
@@ -12,6 +14,11 @@ function Card({ card, onUpdate, onDelete }: CardProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editTitle, setEditTitle] = useState(card.title)
   const [editDescription, setEditDescription] = useState(card.description ?? '')
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: card.id,
+    data: { type: 'card', card }
+  })
 
   function handleSave() {
     const trimmed = editTitle.trim()
@@ -51,8 +58,20 @@ function Card({ card, onUpdate, onDelete }: CardProps) {
     )
   }
 
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.3 : 1,
+  }
+
   return (
-    <div className="card">
+    <div
+      className="card"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...(!isEditing ? listeners : {})}
+    >
       <div className="card-content">
         <h3 className="card-title">{card.title}</h3>
         {card.description && (
