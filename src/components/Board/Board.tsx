@@ -24,6 +24,7 @@ function Board() {
   const [cards, setCards] = useState<CardData[]>([])
   const [columns, setColumns] = useState<ColumnData[]>(DEFAULT_COLUMNS)
   const [activeCard, setActiveCard] = useState<CardData | null>(null)
+  const [activeColumn, setActiveColumn] = useState<ColumnData | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -56,8 +57,14 @@ function Board() {
   }
 
   function handleDragStart(event: DragStartEvent) {
-    if (event.active.data.current?.type === 'card') {
-      setActiveCard(event.active.data.current.card)
+    const activeData = event.active.data.current
+    if (activeData?.type === 'card') {
+      setActiveCard(activeData.card)
+    } else if (activeData?.type === 'column') {
+      const column = columns.find(col => col.id === event.active.id)
+      if (column) {
+        setActiveColumn(column)
+      }
     }
   }
 
@@ -114,7 +121,20 @@ function Board() {
   }
 
   function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    // Handle column reordering
+    if (active.data.current?.type === 'column' && over) {
+      const activeIndex = columns.findIndex((col) => col.id === active.id)
+      const overIndex = columns.findIndex((col) => col.id === over.id)
+
+      if (activeIndex !== overIndex) {
+        setColumns(arrayMove(columns, activeIndex, overIndex))
+      }
+    }
+
     setActiveCard(null)
+    setActiveColumn(null)
   }
 
   return (
@@ -126,17 +146,19 @@ function Board() {
       onDragEnd={handleDragEnd}
     >
       <div className="board">
-        {columns.map((col) => (
-          <Column
-            key={col.id}
-            columnId={col.id}
-            title={col.title}
-            cards={cards.filter((c) => c.columnId === col.id)}
-            onAddCard={handleAddCard}
-            onUpdateCard={handleUpdateCard}
-            onDeleteCard={handleDeleteCard}
-          />
-        ))}
+        <SortableContext items={columns.map(c => c.id)} strategy={horizontalListSortingStrategy}>
+          {columns.map((col) => (
+            <Column
+              key={col.id}
+              columnId={col.id}
+              title={col.title}
+              cards={cards.filter((c) => c.columnId === col.id)}
+              onAddCard={handleAddCard}
+              onUpdateCard={handleUpdateCard}
+              onDeleteCard={handleDeleteCard}
+            />
+          ))}
+        </SortableContext>
       </div>
       <DragOverlay>
         {activeCard ? (
@@ -144,6 +166,16 @@ function Board() {
             card={activeCard}
             onUpdate={() => {}}
             onDelete={() => {}}
+          />
+        ) : null}
+        {activeColumn ? (
+          <Column
+            columnId={activeColumn.id}
+            title={activeColumn.title}
+            cards={cards.filter((c) => c.columnId === activeColumn.id)}
+            onAddCard={() => {}}
+            onUpdateCard={() => {}}
+            onDeleteCard={() => {}}
           />
         ) : null}
       </DragOverlay>

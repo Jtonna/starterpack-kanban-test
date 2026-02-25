@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDroppable } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import type { CardData } from '../../types/board'
 import Card from '../Card/Card'
 import './Column.css'
@@ -24,6 +25,24 @@ function Column({ columnId, title, cards, onAddCard, onUpdateCard, onDeleteCard 
     data: { type: 'column' }
   })
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({
+    id: columnId,
+    data: { type: 'column' }
+  })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.3 : 1,
+  }
+
   function handleAdd() {
     const trimmed = newTitle.trim()
     if (!trimmed) return
@@ -40,8 +59,8 @@ function Column({ columnId, title, cards, onAddCard, onUpdateCard, onDeleteCard 
   }
 
   return (
-    <section className="column">
-      <h2 className="column-title">{title}</h2>
+    <section className="column" ref={setNodeRef} style={style} {...attributes}>
+      <h2 className="column-title" {...listeners}>{title}</h2>
       <div className="column-cards" ref={setDroppableRef}>
         <SortableContext items={cards.map(c => c.id)} strategy={verticalListSortingStrategy}>
           {cards.map((card) => (

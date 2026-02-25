@@ -12,6 +12,11 @@
   font-weight: 600;
   padding: 8px 4px;
   color: #333;
+  cursor: grab;
+}
+
+.column-title:active {
+  cursor: grabbing;
 }
 
 .column-cards {
