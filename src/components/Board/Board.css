@@ -1,0 +1,12 @@
+.board {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  height: 100%;
+  overflow-x: auto;
+}
+
+.board > * {
+  flex: 1;
+  min-width: 250px;
+}
