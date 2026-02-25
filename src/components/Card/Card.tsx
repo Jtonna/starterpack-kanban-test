@@ -56,7 +56,14 @@ function Card({ card, onDelete, onUpdate }: CardProps) {
   }
 
   return (
-    <div ref={setNodeRef} style={style} className="card" {...attributes} {...listeners}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`card ${isDragging ? 'dragging' : ''}`}
+      {...attributes}
+      {...listeners}
+      aria-label={`Drag to move ${card.title}`}
+    >
       <div className="card-header">
         <h3 className="card-title">{card.title}</h3>
         <div className="card-actions">

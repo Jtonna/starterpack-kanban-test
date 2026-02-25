@@ -59,8 +59,14 @@ function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: Column
   }
 
   return (
-    <div ref={setNodeRef} style={style} className="column">
-      <h2 className="column-title" {...attributes} {...listeners} style={{ cursor: 'grab' }}>
+    <div ref={setNodeRef} style={style} className={`column ${isDragging ? 'dragging' : ''}`}>
+      <h2
+        className="column-title"
+        {...attributes}
+        {...listeners}
+        style={{ cursor: 'grab' }}
+        aria-label={`Drag to reorder ${column.title} column`}
+      >
         {column.title}
       </h2>
       <div ref={setDroppableRef} className="column-content">
