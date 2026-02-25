@@ -3,7 +3,12 @@
   border-radius: 6px;
   padding: 10px 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  cursor: default;
+  cursor: grab;
+  user-select: none;
+}
+
+.card:active {
+  cursor: grabbing;
 }
 
 .card-header {

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { Column, Card as CardType } from '../../types'
 import { useSortable } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useDroppable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import Card from '../Card/Card'
 import CardForm from '../CardForm/CardForm'
@@ -33,6 +35,14 @@ function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: Column
     },
   })
 
+  const { setNodeRef: setDroppableRef } = useDroppable({
+    id: column.id,
+    data: {
+      type: 'column',
+      column,
+    },
+  })
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -53,15 +63,17 @@ function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: Column
       <h2 className="column-title" {...attributes} {...listeners} style={{ cursor: 'grab' }}>
         {column.title}
       </h2>
-      <div className="column-content">
-        {sortedCards.map(card => (
-          <Card
-            key={card.id}
-            card={card}
-            onDelete={onDeleteCard}
-            onUpdate={onUpdateCard}
-          />
-        ))}
+      <div ref={setDroppableRef} className="column-content">
+        <SortableContext items={sortedCards.map(card => card.id)} strategy={verticalListSortingStrategy}>
+          {sortedCards.map(card => (
+            <Card
+              key={card.id}
+              card={card}
+              onDelete={onDeleteCard}
+              onUpdate={onUpdateCard}
+            />
+          ))}
+        </SortableContext>
         {isAdding && (
           <CardForm
             onSave={handleAddSave}
