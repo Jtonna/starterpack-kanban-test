@@ -1,0 +1,22 @@
+.column {
+  background: #f4f5f7;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.column-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
