@@ -4,13 +4,13 @@ import Board from './components/Board/Board'
 import './App.css'
 
 const defaultColumns: Column[] = [
-  { id: 'todo', title: 'Todo' },
-  { id: 'in-progress', title: 'In Progress' },
-  { id: 'done', title: 'Done' },
+  { id: 'todo', title: 'Todo', order: 0 },
+  { id: 'in-progress', title: 'In Progress', order: 1 },
+  { id: 'done', title: 'Done', order: 2 },
 ]
 
 function App() {
-  const [columns] = useState<Column[]>(defaultColumns)
+  const [columns, setColumns] = useState<Column[]>(defaultColumns)
   const [cards, setCards] = useState<Card[]>([])
 
   const addCard = (columnId: string, title: string, description?: string) => {
@@ -52,6 +52,61 @@ function App() {
     setCards(reorderedCards)
   }
 
+  const moveCard = (cardId: string, targetColumnId: string, newOrder: number) => {
+    const card = cards.find(c => c.id === cardId)
+    if (!card) return
+
+    const sourceColumnId = card.columnId
+
+    // Update the card's columnId and order
+    const updatedCards = cards.map(c => {
+      if (c.id === cardId) {
+        return { ...c, columnId: targetColumnId, order: newOrder }
+      }
+      return c
+    })
+
+    // Re-index orders in source column (if different from target)
+    let reorderedCards = updatedCards
+    if (sourceColumnId !== targetColumnId) {
+      reorderedCards = updatedCards.map(c => {
+        if (c.id !== cardId && c.columnId === sourceColumnId && c.order > card.order) {
+          return { ...c, order: c.order - 1 }
+        }
+        return c
+      })
+    }
+
+    // Re-index orders in target column to make room for the moved card
+    reorderedCards = reorderedCards.map(c => {
+      if (c.id !== cardId && c.columnId === targetColumnId && c.order >= newOrder) {
+        return { ...c, order: c.order + 1 }
+      }
+      return c
+    })
+
+    setCards(reorderedCards)
+  }
+
+  const reorderColumns = (activeId: string, overId: string) => {
+    const activeIndex = columns.findIndex(col => col.id === activeId)
+    const overIndex = columns.findIndex(col => col.id === overId)
+
+    if (activeIndex === -1 || overIndex === -1) return
+
+    const newColumns = [...columns]
+    const [movedColumn] = newColumns.splice(activeIndex, 1)
+    newColumns.splice(overIndex, 0, movedColumn)
+
+    // Update order fields
+    const reorderedColumns = newColumns.map((col, index) => ({
+      ...col,
+      order: index
+    }))
+
+    setColumns(reorderedColumns)
+  }
+
   return (
     <div className="app">
       <h1 className="app-title">Kanban Board</h1>
@@ -61,6 +116,8 @@ function App() {
         onAddCard={addCard}
         onUpdateCard={updateCard}
         onDeleteCard={deleteCard}
+        onMoveCard={moveCard}
+        onReorderColumns={reorderColumns}
       />
     </div>
   )

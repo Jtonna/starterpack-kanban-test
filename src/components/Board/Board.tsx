@@ -8,12 +8,16 @@ interface BoardProps {
   onAddCard: (columnId: string, title: string, description?: string) => void;
   onUpdateCard: (cardId: string, updates: Partial<Pick<Card, 'title' | 'description'>>) => void;
   onDeleteCard: (cardId: string) => void;
+  onMoveCard: (cardId: string, targetColumnId: string, newOrder: number) => void;
+  onReorderColumns: (activeId: string, overId: string) => void;
 }
 
-function Board({ columns, cards, onAddCard, onUpdateCard, onDeleteCard }: BoardProps) {
+function Board({ columns, cards, onAddCard, onUpdateCard, onDeleteCard, onMoveCard, onReorderColumns }: BoardProps) {
+  const sortedColumns = [...columns].sort((a, b) => a.order - b.order)
+
   return (
     <div className="board">
-      {columns.map(column => {
+      {sortedColumns.map(column => {
         const columnCards = cards.filter(card => card.columnId === column.id)
         return (
           <Column
