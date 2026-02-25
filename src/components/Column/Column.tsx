@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import type { Column, Card as CardType } from '../../types'
 import Card from '../Card/Card'
+import CardForm from '../CardForm/CardForm'
 import './Column.css'
 
 interface ColumnProps {
@@ -11,10 +13,16 @@ interface ColumnProps {
 }
 
 function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: ColumnProps) {
+  const [isAdding, setIsAdding] = useState(false)
   const sortedCards = [...cards].sort((a, b) => a.order - b.order)
 
-  const handleEdit = (cardId: string) => {
-    // Placeholder for sub-task 3
+  const handleAddSave = (title: string, description?: string) => {
+    onAddCard(column.id, title, description)
+    setIsAdding(false)
+  }
+
+  const handleAddCancel = () => {
+    setIsAdding(false)
   }
 
   return (
@@ -26,9 +34,20 @@ function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: Column
             key={card.id}
             card={card}
             onDelete={onDeleteCard}
-            onEdit={handleEdit}
+            onUpdate={onUpdateCard}
           />
         ))}
+        {isAdding && (
+          <CardForm
+            onSave={handleAddSave}
+            onCancel={handleAddCancel}
+          />
+        )}
+        {!isAdding && (
+          <button className="add-card-btn" onClick={() => setIsAdding(true)}>
+            + Add card
+          </button>
+        )}
       </div>
     </div>
   )

@@ -1,19 +1,43 @@
+import { useState } from 'react'
 import type { Card as CardType } from '../../types'
+import CardForm from '../CardForm/CardForm'
 import './Card.css'
 
 interface CardProps {
   card: CardType;
   onDelete: (cardId: string) => void;
-  onEdit: (cardId: string) => void;
+  onUpdate: (cardId: string, updates: Partial<Pick<CardType, 'title' | 'description'>>) => void;
 }
 
-function Card({ card, onDelete, onEdit }: CardProps) {
+function Card({ card, onDelete, onUpdate }: CardProps) {
+  const [isEditing, setIsEditing] = useState(false)
+
+  const handleEditSave = (title: string, description?: string) => {
+    onUpdate(card.id, { title, description })
+    setIsEditing(false)
+  }
+
+  const handleEditCancel = () => {
+    setIsEditing(false)
+  }
+
+  if (isEditing) {
+    return (
+      <CardForm
+        initialTitle={card.title}
+        initialDescription={card.description}
+        onSave={handleEditSave}
+        onCancel={handleEditCancel}
+      />
+    )
+  }
+
   return (
     <div className="card">
       <div className="card-header">
         <h3 className="card-title">{card.title}</h3>
         <div className="card-actions">
-          <button className="card-action-btn" onClick={() => onEdit(card.id)} title="Edit">✎</button>
+          <button className="card-action-btn" onClick={() => setIsEditing(true)} title="Edit">✎</button>
           <button className="card-action-btn card-delete-btn" onClick={() => onDelete(card.id)} title="Delete">×</button>
         </div>
       </div>
