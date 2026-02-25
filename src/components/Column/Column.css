@@ -17,3 +17,71 @@
 .column-cards {
   flex: 1;
 }
+
+.column-add-btn {
+  width: 100%;
+  padding: 8px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.column-add-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.column-add-form {
+  padding: 4px 0;
+}
+
+.column-add-title,
+.column-add-description {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  font-family: inherit;
+}
+
+.column-add-description {
+  resize: vertical;
+}
+
+.column-add-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.column-add-actions button {
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.column-add-submit {
+  background-color: #026aa7;
+  color: white;
+  border-color: #026aa7 !important;
+}
+
+.column-add-submit:hover {
+  background-color: #015a8f;
+}
+
+.column-add-cancel {
+  background: #f8f8f8;
+  color: #555;
+}
+
+.column-add-cancel:hover {
+  background: #eee;
+}
