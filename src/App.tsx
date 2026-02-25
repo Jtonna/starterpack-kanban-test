@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import type { Column, Card } from './types'
 import Board from './components/Board/Board'
+import useLocalStorage from './hooks/useLocalStorage'
 import './App.css'
 
 const defaultColumns: Column[] = [
@@ -10,8 +10,8 @@ const defaultColumns: Column[] = [
 ]
 
 function App() {
-  const [columns, setColumns] = useState<Column[]>(defaultColumns)
-  const [cards, setCards] = useState<Card[]>([])
+  const [columns, setColumns] = useLocalStorage<Column[]>('kanban-columns', defaultColumns)
+  const [cards, setCards] = useLocalStorage<Card[]>('kanban-cards', [])
 
   const addCard = (columnId: string, title: string, description?: string) => {
     const cardsInColumn = cards.filter(card => card.columnId === columnId)
