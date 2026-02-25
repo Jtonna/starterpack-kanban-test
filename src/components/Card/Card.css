@@ -1,0 +1,86 @@
+.card {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card--editing {
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.card-description {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.card-actions button {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f8f8f8;
+  cursor: pointer;
+  color: #555;
+}
+
+.card-actions button:hover {
+  background: #eee;
+}
+
+.card-delete-btn:hover {
+  color: #d33;
+  border-color: #d33;
+}
+
+.card-edit-title {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.card-edit-description {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.card-save-btn {
+  background-color: #026aa7 !important;
+  color: white !important;
+  border-color: #026aa7 !important;
+}
+
+.card-save-btn:hover {
+  background-color: #015a8f !important;
+}

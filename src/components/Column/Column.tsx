@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { CardData } from '../../types/board'
+import Card from '../Card/Card'
 import './Column.css'
 
 interface ColumnProps {
@@ -16,7 +17,14 @@ function Column({ columnId, title, cards, onAddCard, onUpdateCard, onDeleteCard 
     <section className="column">
       <h2 className="column-title">{title}</h2>
       <div className="column-cards">
-        {/* Cards will be rendered here in the next sub-task */}
+        {cards.map((card) => (
+          <Card
+            key={card.id}
+            card={card}
+            onUpdate={onUpdateCard}
+            onDelete={onDeleteCard}
+          />
+        ))}
       </div>
     </section>
   )
