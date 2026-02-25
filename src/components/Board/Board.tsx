@@ -11,6 +11,7 @@ const DEFAULT_COLUMNS: ColumnData[] = [
 
 function Board() {
   const [cards, setCards] = useState<CardData[]>([])
+  const [columns, setColumns] = useState<ColumnData[]>(DEFAULT_COLUMNS)
 
   function handleAddCard(columnId: string, title: string, description?: string) {
     const newCard: CardData = {
@@ -36,7 +37,7 @@ function Board() {
 
   return (
     <div className="board">
-      {DEFAULT_COLUMNS.map((col) => (
+      {columns.map((col) => (
         <Column
           key={col.id}
           columnId={col.id}
