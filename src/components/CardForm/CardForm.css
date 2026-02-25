@@ -1,0 +1,67 @@
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: white;
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.card-form-input {
+  font-size: 0.875rem;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+
+.card-form-input:focus {
+  border-color: #4a9eff;
+}
+
+.card-form-textarea {
+  font-size: 0.8rem;
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.card-form-textarea:focus {
+  border-color: #4a9eff;
+}
+
+.card-form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-form-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.card-form-save {
+  background: #0079bf;
+  color: white;
+}
+
+.card-form-save:hover {
+  background: #026aa7;
+}
+
+.card-form-cancel {
+  background: #eee;
+  color: #333;
+}
+
+.card-form-cancel:hover {
+  background: #ddd;
+}
