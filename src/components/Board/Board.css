@@ -1,0 +1,10 @@
+.board {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  flex: 1;
+}
+
+.board > * {
+  flex: 1;
+}
