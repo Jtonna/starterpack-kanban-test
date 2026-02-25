@@ -1,0 +1,14 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #e2e4e9;
+}
+
+.app-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 16px 24px;
+  margin: 0;
+  color: #333;
+}
