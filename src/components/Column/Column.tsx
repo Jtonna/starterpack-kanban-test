@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import type { Column, Card as CardType } from '../../types'
+import { useSortable } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useDroppable } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
 import Card from '../Card/Card'
 import CardForm from '../CardForm/CardForm'
 import './Column.css'
@@ -16,6 +20,35 @@ function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: Column
   const [isAdding, setIsAdding] = useState(false)
   const sortedCards = [...cards].sort((a, b) => a.order - b.order)
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: column.id,
+    data: {
+      type: 'column',
+      column,
+    },
+  })
+
+  const { setNodeRef: setDroppableRef } = useDroppable({
+    id: column.id,
+    data: {
+      type: 'column',
+      column,
+    },
+  })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
   const handleAddSave = (title: string, description?: string) => {
     onAddCard(column.id, title, description)
     setIsAdding(false)
@@ -26,17 +59,27 @@ function Column({ column, cards, onAddCard, onUpdateCard, onDeleteCard }: Column
   }
 
   return (
-    <div className="column">
-      <h2 className="column-title">{column.title}</h2>
-      <div className="column-content">
-        {sortedCards.map(card => (
-          <Card
-            key={card.id}
-            card={card}
-            onDelete={onDeleteCard}
-            onUpdate={onUpdateCard}
-          />
-        ))}
+    <div ref={setNodeRef} style={style} className={`column ${isDragging ? 'dragging' : ''}`}>
+      <h2
+        className="column-title"
+        {...attributes}
+        {...listeners}
+        style={{ cursor: 'grab' }}
+        aria-label={`Drag to reorder ${column.title} column`}
+      >
+        {column.title}
+      </h2>
+      <div ref={setDroppableRef} className="column-content">
+        <SortableContext items={sortedCards.map(card => card.id)} strategy={verticalListSortingStrategy}>
+          {sortedCards.map(card => (
+            <Card
+              key={card.id}
+              card={card}
+              onDelete={onDeleteCard}
+              onUpdate={onUpdateCard}
+            />
+          ))}
+        </SortableContext>
         {isAdding && (
           <CardForm
             onSave={handleAddSave}

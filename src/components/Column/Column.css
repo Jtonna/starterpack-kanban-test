@@ -7,11 +7,21 @@
   flex-direction: column;
 }
 
+.column.dragging {
+  opacity: 0.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .column-title {
   font-size: 1rem;
   font-weight: 600;
   margin: 0 0 12px 0;
   color: #333;
+  user-select: none;
+}
+
+.column-title:active {
+  cursor: grabbing;
 }
 
 .column-content {

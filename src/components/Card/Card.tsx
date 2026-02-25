@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { Card as CardType } from '../../types'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import CardForm from '../CardForm/CardForm'
 import './Card.css'
 
@@ -11,6 +13,27 @@ interface CardProps {
 
 function Card({ card, onDelete, onUpdate }: CardProps) {
   const [isEditing, setIsEditing] = useState(false)
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: card.id,
+    data: {
+      type: 'card',
+      card,
+    },
+  })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+  }
 
   const handleEditSave = (title: string, description?: string) => {
     onUpdate(card.id, { title, description })
@@ -33,7 +56,14 @@ function Card({ card, onDelete, onUpdate }: CardProps) {
   }
 
   return (
-    <div className="card">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`card ${isDragging ? 'dragging' : ''}`}
+      {...attributes}
+      {...listeners}
+      aria-label={`Drag to move ${card.title}`}
+    >
       <div className="card-header">
         <h3 className="card-title">{card.title}</h3>
         <div className="card-actions">
