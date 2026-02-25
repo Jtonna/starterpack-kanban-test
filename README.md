@@ -1,6 +1,14 @@
 # kanban-board
 
-A simple kanban board application built with React and TypeScript.
+A drag-and-drop kanban board with localStorage persistence, built with React and TypeScript.
+
+## Features
+
+- **3-column board:** Todo, In Progress, Done
+- **Card management:** Create cards with required title and optional description, edit, and delete
+- **Drag-and-drop:** Move cards between and within columns, reorder columns
+- **Keyboard accessible:** Full keyboard support for drag-and-drop operations
+- **Persistent state:** All data saved to localStorage and survives page reloads
 
 ## Prerequisites
 
@@ -31,3 +39,8 @@ A simple kanban board application built with React and TypeScript.
 - **Vite** — Fast build tool and dev server
 - **React 19** — UI library
 - **TypeScript** — Type-safe JavaScript
+- **@dnd-kit** — Accessible drag-and-drop library for React
+
+## Architecture
+
+- **useLocalStorage hook** — Custom hook for automatic localStorage synchronization
