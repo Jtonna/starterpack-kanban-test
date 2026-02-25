@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -20,11 +20,40 @@ const DEFAULT_COLUMNS: ColumnData[] = [
   { id: 'done', title: 'Done' },
 ]
 
+const STORAGE_KEY_COLUMNS = 'kanban-columns'
+const STORAGE_KEY_CARDS = 'kanban-cards'
+
+function loadFromStorage<T>(key: string): T | null {
+  try {
+    const raw = localStorage.getItem(key)
+    if (raw === null) return null
+    return JSON.parse(raw) as T
+  } catch {
+    return null
+  }
+}
+
 function Board() {
-  const [cards, setCards] = useState<CardData[]>([])
-  const [columns, setColumns] = useState<ColumnData[]>(DEFAULT_COLUMNS)
+  const [cards, setCards] = useState<CardData[]>(() => loadFromStorage<CardData[]>(STORAGE_KEY_CARDS) ?? [])
+  const [columns, setColumns] = useState<ColumnData[]>(() => loadFromStorage<ColumnData[]>(STORAGE_KEY_COLUMNS) ?? DEFAULT_COLUMNS)
   const [activeCard, setActiveCard] = useState<CardData | null>(null)
   const [activeColumn, setActiveColumn] = useState<ColumnData | null>(null)
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_CARDS, JSON.stringify(cards))
+    } catch {
+      // localStorage unavailable or full
+    }
+  }, [cards])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_COLUMNS, JSON.stringify(columns))
+    } catch {
+      // localStorage unavailable or full
+    }
+  }, [columns])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
